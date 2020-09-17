@@ -1,0 +1,149 @@
+<template>
+  <div class="my-navbar">
+    <div class="logo"><img src="http://govt.cndy.org/newsroom/theme/default/img/logo.png" alt=""></div>
+
+    <!-- <hamburger id="hamburger-container" :is-active="sidebar.open" class="hamburger-container" @toggleClick="toggleSideBar" /> -->
+
+    <div class="right-menu">
+      <nav-search id="header-search" class="right-menu-item" />
+
+      <screenfull id="screenfull" class="right-menu-item hover-effect" />
+
+      <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="hover">
+        <div class="avatar-wrapper">
+          <img src="https://xd-video-pc-img.oss-cn-beijing.aliyuncs.com/xdclass_pro/default/head_img/15.jpeg" class="user-avatar">
+          管理员
+          <i class="el-icon-caret-bottom" />
+        </div>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item icon="el-icon-user-solid">个人信息</el-dropdown-item>
+          <el-dropdown-item icon="el-icon-s-tools">设置中心</el-dropdown-item>
+          <el-dropdown-item icon="el-icon-switch-button" divided>退出登录</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </div>
+  </div>
+</template>
+
+<script>
+// import Hamburger from '@/components/Hamburger'
+import Screenfull from '@/components/Screenfull'
+import NavSearch from '@/components/NavSearch'
+
+export default {
+  name: 'Navbar',
+  components: {
+    // Hamburger,
+    NavSearch,
+    Screenfull
+  },
+  data() {
+    return {
+      sidebar: {
+        open: true
+      }
+    }
+  },
+  methods: {
+    toggleSideBar() {
+      // this.$store.dispatch('app/toggleSideBar')
+      this.sidebar.open = !this.sidebar.open
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.my-navbar {
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0,21,41,.08);
+
+  .logo {
+    width: 210px;
+    float: left;
+    text-align: left;
+    img {
+      // width: 100%;
+      height: 100%;
+    }
+  }
+
+  .hamburger-container {
+    line-height: 46px;
+    height: 100%;
+    float: left;
+    cursor: pointer;
+    transition: background .3s;
+    -webkit-tap-highlight-color:transparent;
+
+    &:hover {
+      background: rgba(0, 0, 0, .025)
+    }
+  }
+
+  .breadcrumb-container {
+    float: left;
+  }
+
+  .errLog-container {
+    display: inline-block;
+    vertical-align: top;
+  }
+
+  .right-menu {
+    float: right;
+    height: 100%;
+    line-height: 50px;
+
+    &:focus {
+      outline: none;
+    }
+
+    .right-menu-item {
+      display: inline-block;
+      padding: 0 10px;
+      height: 100%;
+      font-size: 18px;
+      color: #5a5e66;
+      vertical-align: text-bottom;
+
+      &.hover-effect {
+        cursor: pointer;
+        transition: background .3s;
+
+        &:hover {
+          background: rgba(0, 0, 0, .025)
+        }
+      }
+    }
+
+    .avatar-container {
+      margin-right: 10px;
+
+      .avatar-wrapper {
+        // margin-top: 5px;
+        position: relative;
+        font-size: 14px;
+
+        .user-avatar {
+          cursor: pointer;
+          width: 35px;
+          height: 35px;
+          border-radius: 10px;
+        }
+
+        .el-icon-caret-bottom {
+          cursor: pointer;
+          // position: absolute;
+          // right: -20px;
+          // top: 20px;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
+</style>
