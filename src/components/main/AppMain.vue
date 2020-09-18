@@ -1,12 +1,17 @@
 <template>
-  <el-card class="box-card">
+  <div>
     页面内容
-  </el-card>
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'AppMain'
+  name: 'AppMain',
+  data() {
+    return {
+
+    }
+  }
 }
 </script>
 

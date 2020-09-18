@@ -2,7 +2,9 @@
   <div class="my-navbar">
     <div class="logo"><img src="http://govt.cndy.org/newsroom/theme/default/img/logo.png" alt=""></div>
 
-    <!-- <hamburger id="hamburger-container" :is-active="sidebar.open" class="hamburger-container" @toggleClick="toggleSideBar" /> -->
+    <hamburger id="hamburger-container" :is-active="sidebar.open" class="hamburger-container" @toggleClick="toggleSideBar" />
+
+    <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
 
     <div class="right-menu">
       <nav-search id="header-search" class="right-menu-item" />
@@ -26,16 +28,18 @@
 </template>
 
 <script>
-// import Hamburger from '@/components/Hamburger'
+import Hamburger from '@/components/Hamburger'
+import Breadcrumb from '@/components/Breadcrumb'
 import Screenfull from '@/components/Screenfull'
 import NavSearch from '@/components/NavSearch'
 
 export default {
   name: 'Navbar',
   components: {
-    // Hamburger,
+    Hamburger,
     NavSearch,
-    Screenfull
+    Screenfull,
+    Breadcrumb
   },
   data() {
     return {
@@ -56,10 +60,7 @@ export default {
 <style lang="scss" scoped>
 .my-navbar {
   height: 100%;
-  overflow: hidden;
-  position: relative;
   background: #fff;
-  box-shadow: 0 1px 4px rgba(0,21,41,.08);
 
   .logo {
     width: 210px;

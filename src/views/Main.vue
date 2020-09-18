@@ -1,15 +1,15 @@
 <template>
-  <el-container>
+  <el-container class="main">
     <el-header height="50px">
       <navbar />
     </el-header>
 
-    <el-container>
+    <el-container class="main-body">
       <el-aside width="auto">
         <common-aside />
       </el-aside>
       <el-main>
-        <app-breadcrumb class="app-breadcrumb" />
+        <tags-view class="app-tags" />
         <app-main class="app-main" />
       </el-main>
     </el-container>
@@ -20,8 +20,8 @@
 // import CommonHeader from '@/components/main/CommonHeader'
 import CommonAside from '@/components/main/CommonAside'
 import Navbar from '@/components/main/Navbar'
-import AppBreadcrumb from '@/components/main/AppBreadcrumb'
 import AppMain from '@/components/main/AppMain'
+import TagsView from '@/components/main/TagsView'
 
 export default {
   name: 'Main',
@@ -29,8 +29,8 @@ export default {
     // CommonHeader,
     CommonAside,
     Navbar,
-    AppBreadcrumb,
-    AppMain
+    AppMain,
+    TagsView
   },
   data() {
     return {
@@ -41,24 +41,41 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .el-container {
+  .el-container.main {
     height: 100%;
   }
   .el-header {
     padding: 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    border-bottom: 1px solid #f6f6f6;
   }
+
+  .main-body {
+    margin-top: 50px;
+  }
+
   .el-main {
     background-color: #f0f2f5;
+    padding: 0;
 
-    .app-breadcrumb {
-      height: 30px;
-      line-height: 30px;
-      margin-bottom: 15px;
-      margin-left: 2px;
+    .app-tags {
+      height: 40px;
+      line-height: 40px;
+      padding: 0 80px 0 40px;
+      background-color: #fff;
+      box-sizing: border-box;
+      box-shadow: 0 1px 2px 0 rgba(0,0,0,.1);
+      // position: fixed;
+      // top: 50px;
+      // right: 0;
+      // z-index: 999;
     }
 
     .app-main {
-      height: calc(100% - 45px);
+      height: calc(100% - 40px);
     }
   }
 </style>

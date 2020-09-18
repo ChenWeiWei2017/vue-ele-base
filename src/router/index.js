@@ -7,7 +7,12 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    component: Main
+    component: Main,
+    name: 'Home',
+    meta: {
+      title: '首页',
+      icon: 's-home'
+    }
   }
 ]
 
