@@ -21,7 +21,7 @@
     <div class="tags-tab">
       <ul class="tab-box" :style="{ left: tabLeft + 'px' }">
         <li v-for="item in tagViews" :key="item.path" :class="{ fixed: item.fixed, active: item.path === active }" @click="selectTag($event, item)">
-          <b-icon v-if="item.path === '/'" icon="house" />
+          <b-icon v-if="item.path === '/' || item.path === '/home'" icon="house" />
           <template v-else>
             <span>{{ item.label }}</span>
             <!-- 阻止单击事件继续传播 -->
@@ -39,12 +39,12 @@ export default {
   data() {
     return {
       tabLeft: 0,
-      active: '/',
+      active: '',
       tagViews: [
         {
           name: 'home',
           label: '主页',
-          path: '/',
+          path: '/home',
           fixed: true
         },
         {
@@ -73,6 +73,18 @@ export default {
           path: '/show/page3'
         }
       ]
+    }
+  },
+  watch: {
+    active: {
+      handler(newval, oldval) {
+        // console.log(newval, oldval)
+      }
+    }
+  },
+  created() {
+    if (this.tagViews && this.tagViews.length) {
+      this.active = this.tagViews[0].path
     }
   },
   methods: {

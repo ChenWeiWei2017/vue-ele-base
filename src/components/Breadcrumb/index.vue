@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { pathToRegexp } from 'path-to-regexp'
+import { compile } from 'path-to-regexp'
 
 export default {
   name: 'Breadcrumb',
@@ -53,7 +53,7 @@ export default {
     pathCompile(path) {
       // 用于将一些类似 /user/:name 的路由转换成一个常规的路由
       const { params } = this.$route
-      var toPath = pathToRegexp.compile(path)
+      var toPath = compile(path)
       return toPath(params)
     },
     handleLink(item) {

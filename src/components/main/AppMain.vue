@@ -1,6 +1,8 @@
 <template>
   <div>
-    页面内容
+    <transition name="fade-transform" mode="out-in">
+      <router-view :key="key" />
+    </transition>
   </div>
 </template>
 
@@ -10,6 +12,11 @@ export default {
   data() {
     return {
 
+    }
+  },
+  computed: {
+    key() {
+      return this.$route.path
     }
   }
 }
