@@ -1,2 +1,14 @@
 // 定义一些全局的色值变量
 $theme-color: #33aef0;
+
+// 菜单
+$menuBg: #304156;
+$menuText: #fff;
+$menuActiveText: #409eff;
+
+// 导出，使在vue中能使用
+:export {
+  menuBg: $menuBg;
+  menuText: $menuText;
+  menuActiveText: $menuActiveText;
+}

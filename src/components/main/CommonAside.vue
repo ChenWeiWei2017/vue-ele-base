@@ -1,99 +1,41 @@
 <template>
   <el-menu
-    :default-active="current.path"
-    background-color="#304156"
-    text-color="#fff"
-    active-text-color="#409eff"
+    :default-active="activeMenu"
+    :background-color="variable.menuBg"
+    :text-color="variable.menuText"
+    :active-text-color="variable.menuActiveText"
     :collapse="false"
+    :router="true"
   >
-    <template v-for="(item, index) in menu">
-      <el-menu-item v-if="!item.children" :key="item.path" :index="item.path" @click="selectMenu(item)">
-        <i :class="`el-icon-${item.icon}`" />
-        <span slot="title">{{ item.label }}</span>
-      </el-menu-item>
-      <el-submenu v-else :key="index" :index="`${index}`">
-        <template slot="title">
-          <i :class="`el-icon-${item.icon}`" />
-          <span>{{ item.label }}</span>
-        </template>
-        <el-menu-item v-for="(subitem) in item.children" :key="subitem.path" :index="subitem.path" @click="selectMenu(subitem)">
-          {{ subitem.label }}
-        </el-menu-item>
-      </el-submenu>
-    </template>
+    <aside-menu-item v-for="item in menu" :key="item.path" :item="item" :base-path="menu.path" />
   </el-menu>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import variable from '@/assets/scss/_variable.scss'
+import AsideMenuItem from '@/components/main/AsideMenuItem'
+
 export default {
   name: 'CommonAside',
-  data() {
-    return {
-      // 默认最多只有二级子菜单
-      menu: [
-        {
-          path: '/',
-          label: '首页',
-          name: 'home',
-          icon: 's-home'
-        },
-        {
-          path: '/user',
-          label: '用户管理',
-          name: 'user',
-          icon: 'user-solid'
-        },
-        {
-          path: '/video',
-          label: '视频管理',
-          name: 'video',
-          icon: 'video-camera-solid'
-        },
-        {
-          label: '菜单演示',
-          icon: 'data-analysis',
-          name: 'show',
-          children: [
-            {
-              path: '/show/page1',
-              name: 'show-page1',
-              label: '页面一'
-            },
-            {
-              path: '/show/page2',
-              name: 'show-page2',
-              label: '页面二'
-            },
-            {
-              path: '/show/page3',
-              name: 'show-page3',
-              label: '页面三'
-            }
-          ]
-        }
-      ],
-      current: {}
-    }
+  components: {
+    AsideMenuItem
   },
-  created() {
-    if (this.menu && this.menu.length) {
-      this.current = this.getFirstRouteMenu(this.menu[0])
-      this.$store.dispatch('tab/selectMenu', this.current)
-    }
-  },
-  methods: {
-    selectMenu(item) {
-      if (item !== this.current) {
-        this.current = item
-        this.$store.dispatch('tab/selectMenu', item)
-      }
+  computed: {
+    ...mapState({
+      menu: state => state.permission.routes
+    }),
+    variable() {
+      return variable
     },
-    getFirstRouteMenu(menu) {
-      if (!menu.children || !menu.children.length) {
-        return menu
-      } else {
-        return this.getFirstRouteMenu(menu.children[0])
+    activeMenu() {
+      const route = this.$route
+      const { meta, path } = route
+      // if set path, the sidebar will highlight the path you set
+      if (meta.activeMenu) {
+        return meta.activeMenu
       }
+      return path
     }
   }
 }
