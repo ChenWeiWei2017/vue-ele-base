@@ -11,7 +11,7 @@
         <template v-slot:button-content>
           <i class="el-icon-arrow-down tab-action" />
         </template>
-        <b-dropdown-item href="#">刷新当前标签页</b-dropdown-item>
+        <b-dropdown-item @click="refreshCurrentTag">刷新当前标签页</b-dropdown-item>
         <b-dropdown-item href="#">关闭当前标签页</b-dropdown-item>
         <b-dropdown-item href="#">关闭其它标签页</b-dropdown-item>
         <b-dropdown-item href="#">关闭全部标签页</b-dropdown-item>
@@ -20,12 +20,12 @@
 
     <div class="tags-tab">
       <ul class="tab-box" :style="{ left: tabLeft + 'px' }">
-        <li v-for="item in tagViews" :key="item.path" :class="{ fixed: item.fixed, active: item.path === active }" @click="selectTag($event, item)">
+        <li v-for="item in tagViews" :key="item.path" :class="{ fixed: item.meta.affix, active: item.path === active }" @click="selectTag($event, item)">
           <b-icon v-if="item.path === '/' || item.path === '/home'" icon="house" />
           <template v-else>
-            <span>{{ item.label }}</span>
+            <span>{{ item.meta.title }}</span>
             <!-- 阻止单击事件继续传播 -->
-            <i v-if="!item.fixed" class="close el-icon-close" @click.stop="closeTag($event, item)" />
+            <i v-if="!item.fixed" class="close el-icon-close" @click.prevent.stop="closeTag($event, item)" />
           </template>
         </li>
       </ul>
@@ -34,53 +34,39 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import path from 'path'
+
 export default {
   name: 'TagsView',
   data() {
     return {
       tabLeft: 0,
       active: '',
-      tagViews: [
-        {
-          name: 'home',
-          label: '主页',
-          path: '/home',
-          fixed: true
-        },
-        {
-          name: 'user',
-          label: '用户管理',
-          path: '/user'
-        },
-        {
-          name: 'video',
-          label: '视频管理',
-          path: '/video'
-        },
-        {
-          name: 'show-page1',
-          label: '页面一',
-          path: '/show/page1'
-        },
-        {
-          name: 'show-page2',
-          label: '页面二',
-          path: '/show/page2'
-        },
-        {
-          name: 'show-page3',
-          label: '页面三',
-          path: '/show/page3'
-        }
-      ]
+      affixTags: []
     }
+  },
+  computed: {
+    ...mapState({
+      tagViews: state => state.tab.tagList,
+      routes: state => state.permission.routes
+    })
   },
   watch: {
     active: {
-      handler(newval, oldval) {
-        // console.log(newval, oldval)
+      handler(val) {
+        this.$router.push(val)
+      }
+    },
+    $route: {
+      handler() {
+        this.addTags()
       }
     }
+  },
+  mounted() {
+    this.initTags()
+    this.addTags()
   },
   created() {
     if (this.tagViews && this.tagViews.length) {
@@ -88,6 +74,52 @@ export default {
     }
   },
   methods: {
+    filterAffixTags(routes, basePath = '/') {
+      let tags = []
+      routes.forEach(route => {
+        if (route.meta && route.meta.affix) {
+          const tagPath = path.resolve(basePath, route.path)
+          tags.push({
+            fullPath: tagPath,
+            path: tagPath,
+            name: route.name,
+            meta: { ...route.meta }
+          })
+        }
+        if (route.children) {
+          const tempTags = this.filterAffixTags(route.children, route.path)
+          if (tempTags.length >= 1) {
+            tags = [...tags, ...tempTags]
+          }
+        }
+      })
+      return tags
+    },
+    initTags() {
+      const affixTags = this.affixTags = this.filterAffixTags(this.routes)
+      for (const tag of affixTags) {
+        // Must have tag name
+        if (tag.name) {
+          this.$store.dispatch('tab/addTag', tag)
+        }
+      }
+    },
+    addTags() {
+      const { name } = this.$route
+      if (name) {
+        this.$store.dispatch('tab/addTag', this.$route)
+        this.active = this.$route.path
+      }
+      return false
+    },
+    refreshCurrentTag() {
+      const { fullPath } = this.$route
+      this.$nextTick(() => {
+        this.$router.replace({
+          path: '/redirect' + fullPath
+        })
+      })
+    },
     turnLeft() {
       const tags = Array.from(document.querySelectorAll('.tab-box li'))
       const left = Math.abs(this.tabLeft)

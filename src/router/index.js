@@ -37,6 +37,17 @@ Vue.use(VueRouter)
 // 静态路由，即固定可访问的路由，如登录页、404页等公用页面
 export const constantRoutes = [
   {
+    path: '/redirect',
+    component: Main,
+    hidden: true,
+    children: [
+      {
+        path: '/redirect/:path(.*)',
+        component: () => import('@/views/redirect/index')
+      }
+    ]
+  },
+  {
     path: '/',
     component: Main,
     redirect: '/home',
