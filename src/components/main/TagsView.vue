@@ -19,13 +19,13 @@
     </div>
 
     <div class="tags-tab">
-      <ul class="tab-box" :style="{ left: tabLeft }">
-        <li v-for="item in tagViews" :key="item.path" :class="{ fixed: item.fixed, active: item.path === active }" @click="selectTag(item)">
+      <ul class="tab-box" :style="{ left: tabLeft + 'px' }">
+        <li v-for="item in tagViews" :key="item.path" :class="{ fixed: item.fixed, active: item.path === active }" @click="selectTag($event, item)">
           <b-icon v-if="item.path === '/'" icon="house" />
           <template v-else>
             <span>{{ item.label }}</span>
             <!-- 阻止单击事件继续传播 -->
-            <i v-if="!item.fixed" class="close el-icon-close" @click.stop="closeTag(item)" />
+            <i v-if="!item.fixed" class="close el-icon-close" @click.stop="closeTag($event, item)" />
           </template>
         </li>
       </ul>
@@ -38,7 +38,7 @@ export default {
   name: 'TagsView',
   data() {
     return {
-      tabLeft: '0px',
+      tabLeft: 0,
       active: '/',
       tagViews: [
         {
@@ -78,16 +78,16 @@ export default {
   methods: {
     turnLeft() {
       const tags = Array.from(document.querySelectorAll('.tab-box li'))
-      const left = Math.abs(Number(this.tabLeft.substring(0, this.tabLeft.length - 2)))
+      const left = Math.abs(this.tabLeft)
       const tabWidth = this.getTabWidth()
       if (left < tabWidth) {
-        this.tabLeft = '0px'
+        this.tabLeft = 0
       } else {
         let curLength = 0
         const diff = left - tabWidth
         for (let i = 0; i < tags.length; i++) {
           if (curLength + tags[i].offsetWidth >= diff) {
-            this.tabLeft = -(curLength + tags[i].offsetWidth) + 'px'
+            this.tabLeft = -(curLength + tags[i].offsetWidth)
             break
           }
           curLength += tags[i].offsetWidth
@@ -96,7 +96,7 @@ export default {
     },
     turnRight() {
       const tags = Array.from(document.querySelectorAll('.tab-box li'))
-      const left = Math.abs(Number(this.tabLeft.substring(0, this.tabLeft.length - 2)))
+      const left = Math.abs(this.tabLeft)
       const tabWidth = this.getTabWidth()
       let curLength = 0
       let shouldLeft = 0
@@ -108,21 +108,39 @@ export default {
         curLength += tags[i].offsetWidth
       }
       if (shouldLeft > 0) {
-        this.tabLeft = -shouldLeft + 'px'
+        this.tabLeft = -shouldLeft
       }
     },
     getTabWidth() {
       return document.querySelector('.tab-box').offsetWidth
     },
-    selectTag(item) {
+    selectTag(event, item) {
       if (item.path !== this.active) {
+        // 移动标签
+        let curTag = event.target
+        if (curTag.tagName.toUpperCase() === 'SPAN') {
+          curTag = curTag.parentElement
+        }
+        const rightBtn = document.querySelector('.right-page')
+        if (Math.round(rightBtn.getBoundingClientRect().left) - Math.round(curTag.getBoundingClientRect().left) < Math.round(curTag.getBoundingClientRect().width)) {
+          this.tabLeft -= Math.round(curTag.getBoundingClientRect().width) - Math.round(rightBtn.getBoundingClientRect().left) + Math.round(curTag.getBoundingClientRect().left)
+        }
         // 切换
         this.active = item.path
       }
     },
-    closeTag(tag) {
+    closeTag(event, tag) {
+      const tagIndex = this.tagViews.findIndex(item => item.path === tag.path)
+      // 如果所关闭的标签是当前页最后一个元素且前一页还有元素，则往前翻页
+      if (tagIndex === this.tagViews.length - 1) {
+        const curTag = event.target.parentElement
+        const leftBtn = document.querySelector('.left-page')
+        if (Math.round(curTag.getBoundingClientRect().left) === Math.round(leftBtn.getBoundingClientRect().right)) {
+          this.turnLeft()
+        }
+      }
+
       if (tag.path === this.active) {
-        const tagIndex = this.tagViews.findIndex(item => item.path === tag.path)
         if (this.tagViews.length <= 1) {
           this.active = ''
         } else {
@@ -133,7 +151,7 @@ export default {
           }
         }
       }
-      this.tagViews.splice(this.tagViews.findIndex(item => item.path === tag.path), 1)
+      this.tagViews.splice(tagIndex, 1)
     }
   }
 }
