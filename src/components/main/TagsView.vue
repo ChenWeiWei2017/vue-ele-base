@@ -12,9 +12,9 @@
           <i class="el-icon-arrow-down tab-action" />
         </template>
         <b-dropdown-item @click="refreshCurrentTag">刷新当前标签页</b-dropdown-item>
-        <b-dropdown-item href="#">关闭当前标签页</b-dropdown-item>
-        <b-dropdown-item href="#">关闭其它标签页</b-dropdown-item>
-        <b-dropdown-item href="#">关闭全部标签页</b-dropdown-item>
+        <b-dropdown-item @click="closeCurrentTag">关闭当前标签页</b-dropdown-item>
+        <b-dropdown-item @click="closeOtherTags">关闭其它标签页</b-dropdown-item>
+        <b-dropdown-item @click="closeAllTags">关闭全部标签页</b-dropdown-item>
       </b-dropdown>
     </div>
 
@@ -55,7 +55,11 @@ export default {
   watch: {
     active: {
       handler(val) {
-        this.$router.push(val)
+        if (val && val !== '') {
+          this.$router.push(val)
+        } else {
+          this.$router.push('/')
+        }
       }
     },
     $route: {
@@ -109,6 +113,16 @@ export default {
       if (name) {
         this.$store.dispatch('tab/addTag', this.$route)
         this.active = this.$route.path
+        this.$nextTick(() => {
+          const activeTag = document.querySelector('.tab-box li.active')
+          const leftBtn = document.querySelector('.left-page')
+          const rightBtn = document.querySelector('.right-page')
+          if (activeTag.getBoundingClientRect().right > rightBtn.getBoundingClientRect().left) {
+            this.tabLeft -= activeTag.getBoundingClientRect().right - rightBtn.getBoundingClientRect().left
+          } else if (activeTag.getBoundingClientRect().left < leftBtn.getBoundingClientRect().right) {
+            this.tabLeft += leftBtn.getBoundingClientRect().right - activeTag.getBoundingClientRect().left
+          }
+        })
       }
       return false
     },
@@ -118,6 +132,45 @@ export default {
         this.$router.replace({
           path: '/redirect' + fullPath
         })
+      })
+    },
+    closeCurrentTag() {
+      // 根据active判断当前tag，如果不为空且非fixed，调用this.closeTag()
+      const tags = this.tagViews.filter(item => item.path === this.active && (!item.meta || !item.meta.affix))
+      if (tags && tags.length) {
+        const curTag = tags[0]
+        // 如果标签为最后一个，判断是否要翻页
+        const tagIndex = this.tagViews.findIndex(item => item.path === curTag.path)
+        if (this.tagViews.length <= 1) {
+          this.active = ''
+        } else {
+          if (tagIndex === this.tagViews.length - 1) {
+            const curTagElement = document.querySelector('.tab-box li.active')
+            const leftBtn = document.querySelector('.left-page')
+            if (Math.round(curTagElement.getBoundingClientRect().left) === Math.round(leftBtn.getBoundingClientRect().right)) {
+              this.turnLeft()
+            }
+            this.active = this.tagViews[tagIndex - 1].path
+          } else {
+            this.active = this.tagViews[tagIndex + 1].path
+          }
+        }
+        this.$store.dispatch('tab/delTag', curTag.path)
+      }
+    },
+    closeOtherTags() {
+      this.$store.dispatch('tab/delOtherTag', this.active).then(() => {
+        this.tabLeft = 0
+      })
+    },
+    closeAllTags() {
+      this.$store.dispatch('tab/delAllTag').then(fixedTags => {
+        if (fixedTags && fixedTags.length) {
+          this.active = fixedTags[fixedTags.length - 1].path
+        } else {
+          this.active = ''
+        }
+        this.tabLeft = 0
       })
     },
     turnLeft() {
@@ -165,9 +218,12 @@ export default {
         if (curTag.tagName.toUpperCase() === 'SPAN') {
           curTag = curTag.parentElement
         }
+        const leftBtn = document.querySelector('.left-page')
         const rightBtn = document.querySelector('.right-page')
-        if (Math.round(rightBtn.getBoundingClientRect().left) - Math.round(curTag.getBoundingClientRect().left) < Math.round(curTag.getBoundingClientRect().width)) {
-          this.tabLeft -= Math.round(curTag.getBoundingClientRect().width) - Math.round(rightBtn.getBoundingClientRect().left) + Math.round(curTag.getBoundingClientRect().left)
+        if (curTag.getBoundingClientRect().right > rightBtn.getBoundingClientRect().left) {
+          this.tabLeft -= curTag.getBoundingClientRect().right - rightBtn.getBoundingClientRect().left
+        } else if (curTag.getBoundingClientRect().left < leftBtn.getBoundingClientRect().right) {
+          this.tabLeft += leftBtn.getBoundingClientRect().right - curTag.getBoundingClientRect().left
         }
         // 切换
         this.active = item.path
@@ -195,7 +251,8 @@ export default {
           }
         }
       }
-      this.tagViews.splice(tagIndex, 1)
+      // this.tagViews.splice(tagIndex, 1)
+      this.$store.dispatch('tab/delTag', tag.path)
     }
   }
 }

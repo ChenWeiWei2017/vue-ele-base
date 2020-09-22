@@ -48,8 +48,11 @@ const actions = {
   delOtherTag({ commit }, tagPath) {
     commit('DEL_OTHER_TAG', tagPath)
   },
-  delAllTag({ commit }) {
-    commit('DEL_ALL_TAG')
+  delAllTag({ commit, state }) {
+    return new Promise(resolve => {
+      commit('DEL_ALL_TAG')
+      resolve([...state.tagList])
+    })
   },
   updateTag({ commit }, tag) {
     commit('UPDATE_TAG', tag)

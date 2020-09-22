@@ -2,7 +2,7 @@
   <div class="my-navbar">
     <div class="logo"><img src="http://govt.cndy.org/newsroom/theme/default/img/logo.png" alt=""></div>
 
-    <hamburger id="hamburger-container" :is-active="sidebar.open" class="hamburger-container" @toggleClick="toggleSideBar" />
+    <hamburger id="hamburger-container" :is-active="!collapse" class="hamburger-container" @toggleClick="toggleSideBar" />
 
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
 
@@ -32,6 +32,7 @@ import Hamburger from '@/components/Hamburger'
 import Breadcrumb from '@/components/Breadcrumb'
 import Screenfull from '@/components/Screenfull'
 import NavSearch from '@/components/NavSearch'
+import { mapState } from 'vuex'
 
 export default {
   name: 'Navbar',
@@ -43,15 +44,17 @@ export default {
   },
   data() {
     return {
-      sidebar: {
-        open: true
-      }
+
     }
+  },
+  computed: {
+    ...mapState({
+      collapse: state => state.app.collapse
+    })
   },
   methods: {
     toggleSideBar() {
-      // this.$store.dispatch('app/toggleSideBar')
-      this.sidebar.open = !this.sidebar.open
+      this.$store.dispatch('app/toggleSidebar')
     }
   }
 }

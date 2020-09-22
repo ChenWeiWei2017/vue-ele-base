@@ -58,7 +58,7 @@ export const constantRoutes = [
         component: () => import('@/views/home/index'),
         meta: {
           title: '首页',
-          icon: 's-home',
+          icon: 'house-fill',
           affix: true
         }
       },
@@ -68,7 +68,7 @@ export const constantRoutes = [
         component: () => import('@/views/user/index'),
         meta: {
           title: '用户管理',
-          icon: 'user-solid'
+          icon: 'person-square'
         }
       },
       {
@@ -77,7 +77,7 @@ export const constantRoutes = [
         component: () => import('@/views/video/index'),
         meta: {
           title: '视频管理',
-          icon: 'video-camera-solid'
+          icon: 'camera-reels-fill'
         }
       }
     ]
@@ -88,7 +88,7 @@ export const constantRoutes = [
     redirect: '/show/page1',
     meta: {
       title: '页面演示',
-      icon: 's-marketing'
+      icon: 'window'
     },
     children: [
       {
