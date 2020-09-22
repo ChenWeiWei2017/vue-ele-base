@@ -4,7 +4,7 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-const name = 'vue-manage-system'
+const name = 'Vue后台管理系统'
 
 module.exports = {
   devServer: {

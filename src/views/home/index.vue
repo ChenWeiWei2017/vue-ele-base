@@ -6,7 +6,17 @@
 
 <script>
 export default {
-  name: 'Home'
+  name: 'Home',
+  data() {
+    return {
+
+    }
+  },
+  created() {
+    this.$http.get('/home/getData').then(res => {
+      console.log(res)
+    })
+  }
 }
 </script>
 
