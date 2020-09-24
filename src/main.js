@@ -2,8 +2,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import '@/assets/scss/reset.scss'
 import './plugins/bootstrap.js'
+import '@/assets/scss/reset.scss'
 import './plugins/element.js'
 
 // 引入全局样式

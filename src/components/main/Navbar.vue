@@ -13,8 +13,8 @@
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="hover">
         <div class="avatar-wrapper">
-          <img src="https://xd-video-pc-img.oss-cn-beijing.aliyuncs.com/xdclass_pro/default/head_img/15.jpeg" class="user-avatar">
-          管理员
+          <img src="https://chenww-1259746772.cos.ap-shanghai.myqcloud.com/cmt/avatar/2-1564643605309.jpg" class="user-avatar">
+          <span class="name">William</span>
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
@@ -131,12 +131,15 @@ export default {
         // margin-top: 5px;
         position: relative;
         font-size: 14px;
+        display: flex;
+        align-items: center;
 
         .user-avatar {
           cursor: pointer;
           width: 35px;
           height: 35px;
           border-radius: 10px;
+          margin-right: 5px;
         }
 
         .el-icon-caret-bottom {

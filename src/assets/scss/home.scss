@@ -1,0 +1,101 @@
+.home {
+  padding: 20px;
+
+  .left-panel {
+    .info-card {
+      margin-bottom: 20px;
+
+      .user-info {
+        display: flex;
+        align-items: center;
+
+        .info {
+          margin-left: 40px;
+
+          p {
+            margin-bottom: 10px;
+  
+            &.name {
+              font-size: 32px;
+            }
+  
+            &.access {
+              font-size: 16px;
+              color: #999999;
+            }
+          }
+        }
+      }
+
+      .login-info {
+        p {
+          line-height: 32px;
+          font-size: 14px;
+          color: #999999;
+
+          span {
+            color: #666;
+            margin-left: 60px;
+          }
+        }
+      }
+    }
+
+    .table-card {
+      height: 700px;
+    }
+  }
+
+  .right-panel {
+    .order-card {
+      margin-bottom: 20px;
+      
+      .el-card__body {
+        padding: 0;
+        display: flex;
+        align-items: center;
+
+        .icon {
+          width: 80px;
+          height: 80px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background-color: #17a2b8;
+          color: #fff;
+  
+          .b-icon {
+            width: 60%;
+            height: 60%;
+          }
+        }
+
+        .order-info {
+          margin-left: 15px;
+          
+          .data {
+            font-size: 24px;
+            margin-bottom: 8px;
+          }
+
+          .text {
+            font-size: 14px;
+            color: #999999;
+          }
+        }
+      }      
+    }
+
+    .big-chart-card {
+      margin-bottom: 20px;
+    }
+
+    .big-chart-card, .sm-chart-card {
+      height: 400px;
+
+      .el-card__body {
+        height: 100%;
+      }
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import { constantRoutes /*, asyncRoutes */ } from '@/router'
+import { constantRoutes, asyncRoutes } from '@/router'
 
 /**
  * 通过 meta.role 属性判断用户是否有权限
@@ -60,7 +60,7 @@ const actions = {
     //   commit('SET_ROUTES', accessedRoutes)
     //   resolve(accessedRoutes)
     // })
-    commit('SET_ROUTES', [])
+    commit('SET_ROUTES', asyncRoutes)
   }
 }
 

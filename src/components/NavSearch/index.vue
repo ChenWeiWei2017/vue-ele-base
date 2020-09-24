@@ -12,7 +12,7 @@
       class="header-search-select"
       @change="change"
     >
-      <el-option v-for="item in options" :key="item.path" :value="item" :label="item.title.join(' > ')" />
+      <el-option v-for="item in options" :key="item.item.path" :value="item.item" :label="item.item.title.join(' > ')" />
     </el-select>
   </div>
 </template>
@@ -36,8 +36,7 @@ export default {
   },
   computed: {
     routes() {
-      // return this.$store.getters.permission_routes
-      return []
+      return this.$store.state.permission.routes
     }
   },
   watch: {

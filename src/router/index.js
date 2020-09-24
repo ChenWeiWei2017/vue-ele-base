@@ -48,6 +48,15 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/404',
+    name: 'Page404',
+    hidden: true,
+    component: () => import('@/views/error/404'),
+    meta: {
+      title: '404 Not Found'
+    }
+  },
+  {
     path: '/',
     component: Main,
     redirect: '/home',
@@ -116,11 +125,17 @@ export const constantRoutes = [
         }
       }
     ]
-  }
+  },
+  { path: '*', redirect: '/404', hidden: true }
 ]
 
 // 动态路由，这些路由需要根据用户的权限信息进行加载
-export const asyncRoutes = []
+export const asyncRoutes = [
+  // todo 动态路由
+
+  // 404 页面必须放在最后
+  // { path: '*', redirect: '/404', hidden: true }
+]
 
 const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location) {

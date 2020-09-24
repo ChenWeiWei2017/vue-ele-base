@@ -5,12 +5,12 @@
     </el-header>
 
     <el-container class="main-body">
-      <el-aside width="auto">
+      <el-aside ref="appAside" width="auto">
         <common-aside />
       </el-aside>
       <el-main>
         <tags-view class="app-tags" />
-        <app-main class="app-main" />
+        <app-main ref="appMain" class="app-main" />
       </el-main>
     </el-container>
   </el-container>
@@ -39,6 +39,10 @@ export default {
   },
   created() {
     this.$store.dispatch('permission/generateRoutes')
+  },
+  mounted() {
+    this.$refs.appAside.$el.style.height = document.body.clientHeight - 50 + 'px'
+    this.$refs.appMain.$el.style.height = document.body.clientHeight - 91 + 'px'
   }
 }
 </script>
@@ -63,6 +67,7 @@ export default {
   .el-main {
     background-color: #f0f2f5;
     padding: 0;
+    overflow-x: hidden;
 
     .app-tags {
       height: 40px;
@@ -78,7 +83,10 @@ export default {
     }
 
     .app-main {
-      height: calc(100% - 40px);
+      // height: calc(100% - 40px);
+      margin-top: 1px;
+      overflow-x: hidden;
+      overflow-y: auto;
     }
   }
 </style>
