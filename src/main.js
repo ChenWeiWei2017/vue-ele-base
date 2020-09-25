@@ -9,6 +9,7 @@ import './plugins/element.js'
 // 引入全局样式
 import '@/assets/scss/index.scss'
 import http from '@/api/config'
+import './permission'
 import './mock'
 
 Vue.config.productionTip = false

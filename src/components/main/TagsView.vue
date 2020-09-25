@@ -7,15 +7,17 @@
       <i class="el-icon-d-arrow-right" />
     </div>
     <div class="active-btn control-btn">
-      <b-dropdown variant="link" toggle-class="text-decoration-none" no-caret>
-        <template v-slot:button-content>
-          <i class="el-icon-arrow-down tab-action" />
-        </template>
-        <b-dropdown-item @click="refreshCurrentTag">刷新当前标签页</b-dropdown-item>
-        <b-dropdown-item @click="closeCurrentTag">关闭当前标签页</b-dropdown-item>
-        <b-dropdown-item @click="closeOtherTags">关闭其它标签页</b-dropdown-item>
-        <b-dropdown-item @click="closeAllTags">关闭全部标签页</b-dropdown-item>
-      </b-dropdown>
+      <el-dropdown @command="handleCommand">
+        <span class="el-dropdown-link">
+          <b-icon icon="chevron-down" />
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item command="refresh">刷新当前标签页</el-dropdown-item>
+          <el-dropdown-item command="close">关闭当前标签页</el-dropdown-item>
+          <el-dropdown-item command="closeOther">关闭其它标签页</el-dropdown-item>
+          <el-dropdown-item command="closeAll">关闭全部标签页</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
     </div>
 
     <div class="tags-tab">
@@ -125,6 +127,22 @@ export default {
         })
       }
       return false
+    },
+    handleCommand(command) {
+      switch (command) {
+        case 'refresh':
+          this.refreshCurrentTag()
+          break
+        case 'close':
+          this.closeCurrentTag()
+          break
+        case 'closeOther':
+          this.closeOtherTags()
+          break
+        case 'closeAll':
+          this.closeAllTags()
+          break
+      }
     },
     refreshCurrentTag() {
       const { fullPath } = this.$route
@@ -299,6 +317,7 @@ export default {
 
     .tags-tab {
       margin: 0;
+      width: 100%;
       overflow: hidden;
       text-align: left!important;
 

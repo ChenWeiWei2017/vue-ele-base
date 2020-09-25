@@ -206,7 +206,8 @@ export default {
           this.echartData.user.series.push({
             name: key,
             type: 'bar',
-            data: userChart.data.map(item => item[key])
+            data: userChart.data.map(item => item[key]),
+            barGap: 0
           })
         })
       }

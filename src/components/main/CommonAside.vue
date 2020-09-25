@@ -1,15 +1,24 @@
 <template>
-  <el-menu
-    :default-active="activeMenu"
-    :background-color="variable.menuBg"
-    :text-color="variable.menuText"
-    :active-text-color="variable.menuActiveText"
-    :collapse="collapse"
-    :router="true"
-    class="app-menu"
-  >
-    <aside-menu-item v-for="item in menu" :key="item.path" :item="item" :base-path="menu.path" />
-  </el-menu>
+  <div class="sidebar">
+    <div class="logo">
+      <img src="@/assets/logo.png" :style="{width: collapse ? '0' : '186px'}" alt="">
+      <img src="@/assets/logos.png" alt="" :style="{width: collapse ? '50px' : '0'}">
+    </div>
+    <div class="sidemenu">
+      <el-menu
+        :default-active="activeMenu"
+        :background-color="variable.menuBg"
+        :text-color="variable.menuText"
+        :active-text-color="variable.menuActiveText"
+        :collapse="collapse"
+        :router="true"
+        class="app-menu"
+      >
+        <aside-menu-item v-for="item in menu" :key="item.path" :item="item" :base-path="menu.path" />
+      </el-menu>
+    </div>
+  </div>
+
 </template>
 
 <script>
@@ -44,8 +53,34 @@ export default {
 </script>
 
 <style lang="scss">
-  .el-menu {
+  .sidebar {
     height: 100%;
+  }
+
+  .logo {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    background: #fff;
+    text-align: center;
+    overflow: hidden;
+
+    img {
+      height: 50px;
+      transition: all .3s;
+      -webkit-transition: all .3s;
+    }
+  }
+
+  .sidemenu {
+    height: calc(100% - 50px);
+  }
+
+  .el-menu {
+    overflow: scroll;
+    height: 100%;
+    border-right: 0 !important;
   }
 
   .app-menu:not(.el-menu--collapse) {

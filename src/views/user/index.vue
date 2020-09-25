@@ -1,6 +1,11 @@
 <template>
-  <div>
-    用户管理
+  <div class="user-manage">
+    <div class="manage-head">
+      头部
+    </div>
+    <div class="manage-body">
+      内容
+    </div>
   </div>
 </template>
 
@@ -11,5 +16,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+  .user-manage {
+    padding: 20px;
+  }
 </style>

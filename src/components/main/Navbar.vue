@@ -1,30 +1,32 @@
 <template>
-  <div class="my-navbar">
-    <div class="logo"><img src="http://govt.cndy.org/newsroom/theme/default/img/logo.png" alt=""></div>
+  <div>
+    <div class="my-navbar">
+      <hamburger id="hamburger-container" :is-active="!collapse" class="hamburger-container" @toggleClick="toggleSideBar" />
 
-    <hamburger id="hamburger-container" :is-active="!collapse" class="hamburger-container" @toggleClick="toggleSideBar" />
+      <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
 
-    <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
+      <div class="right-menu">
+        <nav-search id="header-search" class="right-menu-item" />
 
-    <div class="right-menu">
-      <nav-search id="header-search" class="right-menu-item" />
+        <screenfull id="screenfull" class="right-menu-item hover-effect" />
 
-      <screenfull id="screenfull" class="right-menu-item hover-effect" />
-
-      <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="hover">
-        <div class="avatar-wrapper">
-          <img src="https://chenww-1259746772.cos.ap-shanghai.myqcloud.com/cmt/avatar/2-1564643605309.jpg" class="user-avatar">
-          <span class="name">William</span>
-          <i class="el-icon-caret-bottom" />
-        </div>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item icon="el-icon-user-solid">个人信息</el-dropdown-item>
-          <el-dropdown-item icon="el-icon-s-tools">设置中心</el-dropdown-item>
-          <el-dropdown-item icon="el-icon-switch-button" divided>退出登录</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
+        <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="hover">
+          <div class="avatar-wrapper">
+            <img src="https://chenww-1259746772.cos.ap-shanghai.myqcloud.com/cmt/avatar/2-1564643605309.jpg" class="user-avatar">
+            <span class="name">William</span>
+            <i class="el-icon-caret-bottom" />
+          </div>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item icon="el-icon-user-solid">个人信息</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-s-tools">设置中心</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-switch-button" divided>退出登录</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
     </div>
+    <tags-view class="app-tags" />
   </div>
+
 </template>
 
 <script>
@@ -32,6 +34,7 @@ import Hamburger from '@/components/Hamburger'
 import Breadcrumb from '@/components/Breadcrumb'
 import Screenfull from '@/components/Screenfull'
 import NavSearch from '@/components/NavSearch'
+import TagsView from '@/components/main/TagsView'
 import { mapState } from 'vuex'
 
 export default {
@@ -40,7 +43,8 @@ export default {
     Hamburger,
     NavSearch,
     Screenfull,
-    Breadcrumb
+    Breadcrumb,
+    TagsView
   },
   data() {
     return {
@@ -62,18 +66,9 @@ export default {
 
 <style lang="scss" scoped>
 .my-navbar {
-  height: 100%;
+  height: 50px;
+  border-bottom: 1px solid #f6f6f6;
   background: #fff;
-
-  .logo {
-    width: 210px;
-    float: left;
-    text-align: left;
-    img {
-      // width: 100%;
-      height: 100%;
-    }
-  }
 
   .hamburger-container {
     line-height: 46px;
@@ -152,5 +147,14 @@ export default {
       }
     }
   }
+}
+
+.app-tags {
+  height: 40px;
+  line-height: 40px;
+  padding: 0 80px 0 40px;
+  background-color: #fff;
+  box-sizing: border-box;
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,.1);
 }
 </style>
