@@ -1,9 +1,11 @@
 const Mock = require('mockjs')
 
 const home = require('./home')
+const user = require('./user')
 
 const mocks = [
-  ...home
+  ...home,
+  ...user
 ]
 
 Mock.setup({

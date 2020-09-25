@@ -22,7 +22,7 @@
 
     <div class="tags-tab">
       <ul class="tab-box" :style="{ left: tabLeft + 'px' }">
-        <li v-for="item in tagViews" :key="item.path" :class="{ fixed: item.meta.affix, active: item.path === active }" @click="selectTag($event, item)">
+        <li v-for="item in tagViews" :key="item.path" :class="{ fixed: item.meta.affix, active: item.path === active }" @click="selectTag(item)">
           <b-icon v-if="item.path === '/' || item.path === '/home'" icon="house" />
           <template v-else>
             <span>{{ item.meta.title }}</span>
@@ -229,21 +229,8 @@ export default {
     getTabWidth() {
       return document.querySelector('.tab-box').offsetWidth
     },
-    selectTag(event, item) {
+    selectTag(item) {
       if (item.path !== this.active) {
-        // 移动标签
-        let curTag = event.target
-        if (curTag.tagName.toUpperCase() === 'SPAN') {
-          curTag = curTag.parentElement
-        }
-        const leftBtn = document.querySelector('.left-page')
-        const rightBtn = document.querySelector('.right-page')
-        if (curTag.getBoundingClientRect().right > rightBtn.getBoundingClientRect().left) {
-          this.tabLeft -= curTag.getBoundingClientRect().right - rightBtn.getBoundingClientRect().left
-        } else if (curTag.getBoundingClientRect().left < leftBtn.getBoundingClientRect().right) {
-          this.tabLeft += leftBtn.getBoundingClientRect().right - curTag.getBoundingClientRect().left
-        }
-        // 切换
         this.active = item.path
       }
     },

@@ -1,8 +1,8 @@
 <template>
   <div class="sidebar">
     <div class="logo">
-      <img src="@/assets/logo.png" :style="{width: collapse ? '0' : '186px'}" alt="">
-      <img src="@/assets/logos.png" alt="" :style="{width: collapse ? '50px' : '0'}">
+      <img src="@/assets/logo.png" :style="{width: collapse ? '0' : '186px', height: '50px'}" alt="">
+      <img src="@/assets/logos.png" alt="" :style="{width: collapse ? '40px' : '0', height: '40px'}">
     </div>
     <div class="sidemenu">
       <el-menu
@@ -65,9 +65,12 @@ export default {
     background: #fff;
     text-align: center;
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     img {
-      height: 50px;
+      // height: 50px;
       transition: all .3s;
       -webkit-transition: all .3s;
     }
